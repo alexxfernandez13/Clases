@@ -1,15 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Oct 17 16:37:27 2020
-
-@author: Propietario
-"""
-
 ##### CLASSE vs FUNCTIONS
 
 # - 1 logica / tematica
 # - 2 para tener un objeto que lo contenga todo
-
 
 class Coche():
     
@@ -36,8 +28,3 @@ print(coche.velocidad) #mirar velocidad
 
 coche.report()
 coche.claxon()
-
-
-
-
-

@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Oct 17 16:57:52 2020
-
-@author: Propietario
-"""
 import matplotlib.pyplot as plt
 
 class Grafico ():
@@ -20,7 +14,6 @@ y = [1,2,3]
 
 objeto = Grafico(x, y)
 objeto.exportar_imagen()
-
 
 """
 PODER DE LAS CLASES VS FUNCIONES -> te da un objeto con mucha info!

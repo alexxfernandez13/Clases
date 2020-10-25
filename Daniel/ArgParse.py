@@ -1,5 +1,4 @@
 """
-
 ARGPARSE --> Codigo --> Classes
 
 Ejercicio casa: 
@@ -27,9 +26,7 @@ Ejercicio casa:
     
     5) Hacer un diccionario {elementolista1: elementolista2, elemento2lista2, elemento2lista2....}
     # {a:1, b:2 c:3 d:4} -> [a,b,c,d] [1,2,3,4]
-
 """
-#como realizar ejecuciones paso a paso???
 
 import argparse
 import numpy as np
@@ -37,53 +34,81 @@ import matplotlib.pyplot as plt
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Lee, guarda y haz cosas con tu CSV!')
-    parser.add_argument('-l','--list',type=list, action='append', help='Recoge 2 listas', required=True)
+    "Recoger lista de listas"
+    #parser.add_argument('-l1','--lista1',  type=list, action='append', help='Recoge 2 listas', required=True) 
+    # Use like:
+    # python arg.py -l 1234 -l 2345 -l 3456 -l 4567
+    
+    "Recoger lista una a una"
+    parser.add_argument('-l1','--lista1',  nargs="+", type=int, help='Introduce lista1', required=True) 
+    parser.add_argument('-l2','--lista2', nargs="+",  type=int, help='Introduce lista2', required=True)
+    
+    "Solicitar al usuario si realizar dicha accion"
     parser.add_argument('--suma', action="store_true", help='Realiza la suma')
     parser.add_argument('--media', action="store_true", help='Realiza la media')
     parser.add_argument('--corr', action="store_true", help='Realiza la corr')
     parser.add_argument('--plot', action="store_true", help='Realiza el plot')
     parser.add_argument('--dicc', action="store_true", help='Realiza el dicc')
-    # Use like:
-    # python arg.py -l 1234 -l 2345 -l 3456 -l 4567
+
     args = parser.parse_args() #Lee la linea de commandline
-    return args.list, args.suma, args.media, args.corr, args.plot, args.dicc
+    return args.lista1, args.lista2, args.suma, args.media, args.corr, args.plot, args.dicc
  
 class Lista ():
     
-    def __init__(self, lista):
-        self.lista = [[int(float(j)) for j in i] for i in lista] 
+    def __init__(self, lista1, lista2):
+        self.lista1 = lista1
+        self.lista2 = lista2
+        self.lista = lista1 + lista2
         
-    def output(self, suma, media, correlacion, plot, dicc):
+    def output(self, suma, media, corr, plot, dicc):
         if suma:
-            suma = [sum(x) for x in zip(*self.lista)]
-            print(suma)
+            self.suma()
             
         if media:
-            media = [float(sum(col))/len(col) for col in zip(*self.lista)]
-            print(media)
+            self.media()
             
         if corr:
-            print(np.corrcoef(self.lista))
-       
+            self.correlacion()
+                 
         if plot:
-            plt.xlabel("X-axis")
-            plt.ylabel("Y-axis")
-            plt.title("A test graph")
-            for i in range(len(self.lista[0])):
-                plt.plot([pt[i] for pt in self.lista],label = 'id %s'%i)
-            plt.legend()
-            plt.show()
+            self.plot()
             
         if dicc:
-            print(".")
+            self.diccionario()
+            
+    def suma(self):
+        suma = sum(self.lista)
+        print(suma)
+        
+    def media(self):
+        media = np.mean(self.lista)
+        print(media)
 
-lista, suma, media, corr, plot, dicc = parse_args()
+    def correlacion(self):
+        print(np.corrcoef(self.lista))
 
-print(lista, suma, media, corr, plot, dicc)
+    def plot(self):
+        plt.xlabel("X-axis")
+        plt.ylabel("Y-axis")
+        plt.title("A test graph")
+        plt.plot(self.lista1, self.lista2)
+        plt.legend()
+        plt.show()
+    
+    def diccionario(self):
+        dictionary = {}
+        for elemento1, elemento2 in zip(self.lista1, self.lista2):
+            dictionary[elemento1] = elemento2
+        print(dictionary)
 
-objeto_lista = Lista (lista)
+"Definir main() para la parte de las ejecuciones"
+def main():
+    lista1, lista2, suma, media, corr, plot, dicc = parse_args()
+    print(lista1, lista2, suma, media, corr, plot, dicc)
+    objeto_lista = Lista (lista1, lista2)
+    objeto_lista.output(suma, media, corr, plot, dicc)
 
-objeto_lista.output(suma, media, corr, plot, dicc)
+main()
 
 
 
